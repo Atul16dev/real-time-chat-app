@@ -1,0 +1,299 @@
+\documentclass{beamer}
+
+\usetheme{Madrid}
+\usecolortheme{seahorse}
+
+\usepackage{tikz}
+
+\setbeamertemplate{background}{
+\begin{tikzpicture}[remember picture,overlay]
+\path[shade,left color=blue!10,right color=purple!10]
+(current page.south west) rectangle (current page.north east);
+\end{tikzpicture}
+}
+
+% \title{Real Time Chat App}
+% \institute{IET Lucknow}
+% \date{Academic Year 2025--2026}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{}
+
+\begin{document}
+
+\begin{frame}
+
+\centering
+{\LARGE \textbf{Real Time Chat App}}
+
+\vspace{0.5cm}
+
+{\large IET Lucknow}
+
+\vspace{0.3cm}
+
+{\large Department of Computer Science and Engineering}
+
+\vspace{0.8cm}
+
+\textbf{Team Members}
+
+\vspace{0.3cm}
+
+\begin{tabular}{|c|c|c|c|}
+\hline
+S.No & Name & Roll No & Year \\
+\hline
+1 &Abhishek  &2400520100005  & 2nd  \\
+\hline
+2 & Aman Kushwaha & 2400520100012 & 2nd  \\
+\hline
+3 & Aman Yadav & 2400520100013 & 2nd \\
+\hline
+4 & Atul Kumar & 2400520100024 & 2nd \\
+\hline
+5 & Dipayan Roy & 2400520100035 & 2nd \\
+\hline
+\end{tabular}
+
+\end{frame}
+% Slide 2
+\begin{frame}{Introduction}
+\vspace{-1.5cm}
+\begin{itemize}
+\item Real-time chat applications allow instant communication between users.
+\item Messages are delivered without refreshing the page.
+\item Messaging apps like WhatsApp and Messenger are widely used today.
+\item These apps support text messaging, image sharing, and online status.
+\item This project uses the MERN stack and Socket.io for real-time communication.
+\end{itemize}
+
+\end{frame}
+\begin{frame}{Technologies Used}
+
+\setlength{\columnsep}{1cm}  % gap between left and right columns
+
+\begin{columns}
+
+\column{0.48\textwidth}
+
+\begin{block}{Backend Technologies}
+\begin{itemize}
+\item \textbf{Node.js} – Server runtime
+\item \textbf{Express.js} – Backend framework
+\item \textbf{MongoDB} – Database
+\item \textbf{JWT} – Authentication
+\end{itemize}
+\end{block}
+
+\vspace{1cm}
+
+\begin{alertblock}{Real-Time Communication}
+\begin{itemize}
+\item \textbf{Socket.io} – Enables instant messaging
+\end{itemize}
+\end{alertblock}
+
+\column{0.48\textwidth}
+
+\vspace{0.6cm}
+
+\begin{exampleblock}{Frontend Technologies}
+\begin{itemize}
+\item \textbf{React.js} – Frontend UI
+\item \textbf{Tailwind CSS} – UI styling
+\end{itemize}
+\end{exampleblock}
+
+\vspace{1.9cm}
+
+\begin{block}{Media Storage}
+\begin{itemize}
+\item \textbf{Cloudinary} – Image storage and management
+\end{itemize}
+\end{block}
+
+\end{columns}
+
+\end{frame}
+\begin{frame}{Real-Time Chat Application Architecture}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{fchar.png}
+\end{center}
+
+\end{frame}
+\begin{frame}{Features of the Chat Application}
+
+\begin{enumerate}
+
+\item \textbf{User Signup and Login}
+\begin{itemize}
+\item Users can create accounts and log in securely.
+\end{itemize}
+
+\item \textbf{Real-time Messaging}
+\begin{itemize}
+\item Messages are delivered instantly using Socket.io.
+\end{itemize}
+
+\item \textbf{Image Sharing}
+\begin{itemize}
+\item Users can share images within the chat.
+\end{itemize}
+
+\item \textbf{Online / Offline Status}
+\begin{itemize}
+\item Users can see whether others are online or offline.
+\end{itemize}
+
+\item \textbf{Profile Editing}
+\begin{itemize}
+\item Users can update profile information and images.
+\end{itemize}
+
+\item \textbf{Unseen Message Notification}
+\begin{itemize}
+\item Users receive notifications for unread messages.
+\end{itemize}
+
+\item \textbf{Responsive UI}
+\begin{itemize}
+\item The application works smoothly on mobile and desktop devices.
+\end{itemize}
+
+\end{enumerate}
+
+\end{frame}
+\begin{frame}{Backend Implementation}
+
+\begin{itemize}
+\vspace{-1cm}
+\item Built using \textbf{Node.js} and \textbf{Express.js}
+
+\item REST APIs for authentication and messaging
+
+\item Passwords secured using \textbf{bcryptjs}
+
+\item \textbf{JWT} used for user authentication
+
+\end{itemize}
+
+\vspace{0.5cm}
+
+\textbf{Main API Endpoints}
+
+\begin{itemize}
+
+\item \texttt{/signup} – User registration
+
+\item \texttt{/login} – User login
+
+\item \texttt{/messages} – Send / receive messages
+
+\item \texttt{/profile} – Manage user profile
+
+\end{itemize}
+
+\end{frame}
+\begin{frame}{Real-Time Communication (Socket.io)}
+\vspace{-0.5cm}
+\begin{block}{Key Concept}
+\begin{itemize}
+\item Enables \textbf{bidirectional communication} between client and server
+\item Server keeps track of \textbf{online users}
+\item Messages are delivered \textbf{instantly} without page refresh
+\end{itemize}
+\end{block}
+
+\vspace{0.5cm}
+
+\begin{exampleblock}{Socket Events}
+\begin{itemize}
+\item \texttt{connect} -- User connects to the server
+\item \texttt{new message} -- Send and receive messages
+\item \texttt{disconnect} -- User leaves the chat
+\end{itemize}
+\end{exampleblock}
+
+\end{frame}
+\begin{frame}{Application Demo}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{chart2.png}
+\end{center}
+\end{frame}
+\begin{frame}{Authentication System}
+\vspace{-1.5cm}
+\begin{columns}
+
+\column{1\textwidth}
+
+\vspace{-1.5cm}
+\begin{itemize}
+\item JWT token used for authentication
+\item Token stored in localStorage
+\item Middleware verifies user identity
+\item Secure password hashing
+\end{itemize}
+
+
+\end{columns}
+
+\end{frame}
+\begin{frame}{Advantages}
+\vspace{-1.7cm}
+\begin{columns}
+
+\column{0.5\textwidth}
+
+\begin{itemize}
+\item \textbf{Fast Real-Time Communication}
+
+Messages are delivered instantly between users.
+
+\vspace{0.4cm}
+
+\item \textbf{Scalable Architecture}
+
+MERN stack supports multiple users efficiently.
+
+\end{itemize}
+
+\column{0.5\textwidth}
+
+\begin{itemize}
+\item \textbf{Secure Authentication}
+
+JWT ensures safe and secure user login.
+
+\vspace{0.4cm}
+
+\item \textbf{Cloud-Based Storage}
+
+Images and media stored securely using Cloudinary.
+
+\end{itemize}
+
+\end{columns}
+
+\end{frame}
+\begin{frame}{Future Improvements}
+\vspace{-2.4cm}
+\begin{itemize}
+\item Voice and video calls
+\item Group chats
+\item Message encryption
+\item Push notifications
+\item Mobile app version
+\end{itemize}
+
+\end{frame}
+\begin{frame}
+\begin{center}
+\Huge Thank You!\\
+\vspace{0.5cm}
+\Large Any Questions?
+\end{center}
+\end{frame}
+\end{document}
+\end{document}
+
+
