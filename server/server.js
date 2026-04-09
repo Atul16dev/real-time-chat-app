@@ -4,6 +4,7 @@ import cors from "cors";
 import http from "http";
 //import { Server } from "socket.io";
 import connectDB from "./lib/db.js";
+import userRouter from "./routes/userRoutes.js";
 
 //dotenv.config();
 
@@ -20,7 +21,10 @@ const server = http.createServer(app);
 
 app.use(express.json({limit: "4mb"}));
 app.use(cors());
+
 app.use("/api/status", (req,res)=> res.send("Server is live"));
+app.use("/api/auth", userRouter);
+
 // Socket connection
 /*io.on("connection", (socket) => {
     console.log("User connected:", socket.id);
