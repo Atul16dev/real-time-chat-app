@@ -66,7 +66,7 @@ export const login = async (req, res) => {
 
     // response
 
-    const token = generateToken(newUser._id)
+    const token = generateToken(userData._id)
 
     res.json({success:true , userData , token , message:"Account Login Successfully"})
    /* res.json({
@@ -95,7 +95,7 @@ export const updateProfile = async (req , res) => {
       let updatedUser;
 
       if(!profilePic){
-        await User.findByIdAndUpdate(userId , {bio , fullName} , {new :true});
+        updatedUser=await User.findByIdAndUpdate(userId , {bio , fullName} , {new :true});
       }else{
         const upload = await cloudinary.uploader.upload(profilePic);
 
