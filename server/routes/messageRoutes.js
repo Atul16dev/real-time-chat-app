@@ -10,7 +10,7 @@ messageRouter.get("/users", protectRoute, getUsersForSidebar);
 // 📥 Get messages between two users
 messageRouter.get("/:id", protectRoute, getMessages);
 
-messageRouter.put("mark/:id" ,protectRoute , markMessageAsSeen  )
+messageRouter.put("/mark/:id" ,protectRoute , markMessageAsSeen  )
 
 // 📤 Send message
 messageRouter.post("/send/:id", protectRoute, sendMessage);

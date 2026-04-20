@@ -15,9 +15,9 @@ const messageSchema = new mongoose.Schema(
       required: true,
     },
 
-    message: {
+    text: {
       type: String,
-      required: true,
+      required: false, // Made false to allow image-only messages 
     },
 
     // optional: for images / files
