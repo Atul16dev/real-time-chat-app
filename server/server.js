@@ -6,6 +6,7 @@ import { Server } from "socket.io";
 import connectDB from "./lib/db.js";
 import userRouter from "./routes/userRoutes.js";
 import messageRouter from "./routes/messageRoutes.js";
+import path from "path";
 
 //dotenv.config();
 
@@ -53,7 +54,15 @@ app.use("/api/status", (req,res)=> res.send("Server is live"));
 app.use("/api/auth", userRouter);
 app.use("/api/messages" , messageRouter)
 
+const __dirname = path.resolve();
 
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname, "../client/dist")));
+
+    app.get("*", (req, res) => {
+        res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
+    });
+}
 
 await connectDB();
 const PORT = process.env.PORT || 5000;
