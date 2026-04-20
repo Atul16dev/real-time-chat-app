@@ -75,8 +75,15 @@ const ChatContainer = ({ selectedUser, setSelecterUser }) => {
                         <div className='text-center text-xs'>
                             <img src={msg.senderId === authUser._id ? authUser.profilePic || assets.avatar_icon :
                                 selectedUser.profilePic || assets.avatar_icon
-                            } alt="" className='w-7 aspect-[1/1] object-cover rounded-full' />
-                            <p className='text-gray-500'>{formatMessageTime(msg.createdAt)}</p>
+                            } alt="" className='w-7 aspect-[1/1] object-cover rounded-full inline-block' />
+                            <p className='text-gray-500 flex items-center justify-center gap-1 mt-1'>
+                                {formatMessageTime(msg.createdAt)}
+                                {msg.senderId === authUser._id && (
+                                    <span className={`text-[10px] md:text-md font-bold leading-none ${msg.seen ? 'text-blue-500' : 'text-gray-400'}`}>
+                                        {msg.seen ? "✓✓" : "✓"}
+                                    </span>
+                                )}
+                            </p>
 
                         </div>
 

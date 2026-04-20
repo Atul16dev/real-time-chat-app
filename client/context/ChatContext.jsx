@@ -71,12 +71,30 @@ export const ChatProvider = ({ children  }) => {
                      [newMessage.senderId] + 1: 1
                 }))
             }
-        })
+        });
+
+        socket.on("messagesSeen", ({ receiverId }) => {
+            if (selectedUser && selectedUser._id === receiverId) {
+                setMessages((prevMessages) => 
+                    prevMessages.map((msg) => ({ ...msg, seen: true }))
+                );
+            }
+        });
+
+        socket.on("messageSeen", ({ messageId }) => {
+            setMessages((prevMessages) => 
+                prevMessages.map((msg) => msg._id === messageId ? { ...msg, seen: true } : msg)
+            );
+        });
     }
 
     // function to unsubcribe from messages
     const unsubcribeFromMessages = () => {
-        if(socket) socket.off("newMessage");
+        if(socket) {
+            socket.off("newMessage");
+            socket.off("messagesSeen");
+            socket.off("messageSeen");
+        }
     }
 
     useEffect(()=>{

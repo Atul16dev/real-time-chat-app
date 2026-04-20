@@ -38,9 +38,25 @@ export const getMessages = async (req , res) => {
         {senderId: selectedUserId , receiverId: myId},
       ]
     })
-    await Message.updateMany({senderId: selectedUserId , receiverId: myId},
-      {seen : true}
-    );
+    const unreadMessagesExist = messages.some(msg => msg.senderId.toString() === selectedUserId.toString() && msg.receiverId.toString() === myId.toString() && !msg.seen);
+
+    if (unreadMessagesExist) {
+        await Message.updateMany({senderId: selectedUserId , receiverId: myId, seen: false},
+          {seen : true}
+        );
+        
+        const senderSocketId = userSocketMap[selectedUserId.toString()];
+        if (senderSocketId) {
+            io.to(senderSocketId).emit("messagesSeen", { receiverId: myId.toString() });
+        }
+        
+        // Update in memory so they are returned as seen to the client
+        messages.forEach((msg) => {
+            if (msg.senderId.toString() === selectedUserId.toString() && msg.receiverId.toString() === myId.toString()) {
+                msg.seen = true;
+            }
+        });
+    }
 
     res.json({success: true , messages})
 
@@ -56,7 +72,16 @@ export const getMessages = async (req , res) => {
 export const markMessageAsSeen = async (req , res )=>{
     try{
       const {id} = req.params;
-      await Message.findByIdAndUpdate(id , {seen:true})
+      const message = await Message.findById(id);
+      if (message && !message.seen) {
+          message.seen = true;
+          await message.save();
+          // Emit socket event to sender
+          const senderSocketId = userSocketMap[message.senderId.toString()];
+          if (senderSocketId) {
+              io.to(senderSocketId).emit("messageSeen", { messageId: id });
+          }
+      }
       res.json({success: true})
 
     } catch(error){
