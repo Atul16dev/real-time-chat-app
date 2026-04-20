@@ -16,16 +16,18 @@ export const AuthProvider = ({children})=>{
     const [onlineUser, setOnlineUser] = useState([]);
     const [socket, setSocket] = useState(null);
 
-    //Check if user is authenticated and if so, set the user data and connect the socket
     const checkAuth = async () => {
         try {
             const {data} = await axios.get("/api/auth/check");
             if(data.success){
-                setAuthUser(data.user)
-                connectSocket(data.user)
+                setAuthUser(data.user);
+                connectSocket(data.user);
             }
         } catch (error) {
-            toast.error(error.message)
+            // Ignore 401 unauthorized errors, it just means the user needs to log in
+            if (error.response && error.response.status !== 401) {
+                toast.error(error.message);
+            }
         }
     }
 

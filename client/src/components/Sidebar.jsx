@@ -1,11 +1,19 @@
-import React, {useContext} from 'react'
-import assets, { userDummyData } from '../assets/assets'
+import React, {useContext, useEffect} from 'react'
+import assets from '../assets/assets'
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
+import { ChatContext } from '../../context/ChatContext';
 
 const Sidebar = ({selectedUser,setSelecterUser}) => {
 
-    const {logout} = useContext(AuthContext)
+    const {logout, authUser, onlineUser} = useContext(AuthContext)
+    const {users, getUsers, unseenMessages} = useContext(ChatContext)
+
+    useEffect(() => {
+        if(authUser) {
+            getUsers()
+        }
+    }, [authUser])
 
     const navigate = useNavigate();
   return (
@@ -42,26 +50,26 @@ const Sidebar = ({selectedUser,setSelecterUser}) => {
         </div>
 
         <div className='flex flex-col'>
-            {userDummyData.map((user,index)=>(
+            {users.map((user,index)=>(
                 <div onClick={()=>{setSelecterUser(user)}} key={index} 
                  className={`relative flex items-center gap-2
                 p-2 pl-4 rounded cursor-pointer max-sm:text-sm 
-                ${selectedUser?._id === user._id && 
-                    'bg-[#282142]/50'
+                ${selectedUser?._id === user._id ? 
+                    'bg-[#282142]/50' : ''
                 }`} >
                     <img src={user?.profilePic || assets.avatar_icon} alt="" 
-                    className='w-[35px] aspect-[1/1] rounded-full'/>
+                    className='w-[35px] aspect-[1/1] rounded-full object-cover'/>
                     <div className='flex flex-col leading-5'>
                         <p>{user.fullName}</p>
                         {
-                            index < 3
+                            onlineUser.includes(user._id)
                             ? <span className='text-green-400 text-xs'>Online</span>
                             : <span className='text-neutral-400 text-xs'>Offline</span>
                         }
                     </div>
-                    {index > 2 && <p className='absolute top-4 right-4 text-xs h-5 w-5 
+                    {unseenMessages[user._id] > 0 && <p className='absolute top-4 right-4 text-xs h-5 w-5 
                     flex justify-center items-center rounded-full bg-violet-500/50'>
-                        {index}</p>}
+                        {unseenMessages[user._id]}</p>}
                 </div>
             ))} 
         </div>
