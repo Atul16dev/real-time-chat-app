@@ -26,7 +26,7 @@ export const AuthProvider = ({children})=>{
         } catch (error) {
             // Ignore 401 unauthorized errors, it just means the user needs to log in
             if (error.response && error.response.status !== 401) {
-                toast.error(error.message);
+                toast.error(error.response?.data?.message || error.message);
             }
         }
     }
@@ -46,8 +46,8 @@ const login = async (state, credentials)=>{
         }else{
             toast.error(data.message)
         }
-    }catch (error){
-        toast.error(error.message)
+    } catch (error) {
+        toast.error(error.response?.data?.message || error.message);
     }
 }
 
@@ -59,8 +59,11 @@ const logout = async () =>{
     setAuthUser(null);
     setOnlineUser([]);
     axios.defaults.headers.common["token"] = null;
-    toast.success("Logged out successfully")
-    socket.disconnect();
+    toast.success("Logged out successfully");
+    if(socket) {
+        socket.disconnect();
+        setSocket(null);
+    }
 }
 
     //Update profile function to handle user profile updates
@@ -72,25 +75,30 @@ const logout = async () =>{
                 setAuthUser(data.user);
                 toast.success("Profile updated successfully")
             }
-        } catch(error){
-            toast.error(error.message)
+        } catch(error) {
+            toast.error(error.response?.data?.message || error.message);
         }
     }
 
     //Connect socket function to handle socket connection and online users updates
     const connectSocket = (userData)=>{
-        if(!userData || socket?.connected) return;
+        if(!userData) return;
+        // Avoid duplicate connections
+        if(socket && socket.connected) return;
         const newSocket = io(backendUrl, {
             query: {
                 userId: userData._id,
             }
         });
-        newSocket.connect();
         setSocket(newSocket);
 
         newSocket.on("getOnlineUsers", (userIds)=>{
             setOnlineUser(userIds);
-        })
+        });
+
+        newSocket.on("connect_error", (err) => {
+            console.error("Socket connection error:", err.message);
+        });
     }
 
     useEffect(()=>{
